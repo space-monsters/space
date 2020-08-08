@@ -1,0 +1,141 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/monitor.png" type="Texture" id=1]
+[ext_resource path="res://assets/cable.png" type="Texture" id=2]
+[ext_resource path="res://assets/rooms/Kitchen.jpg" type="Texture" id=3]
+[ext_resource path="res://Rooms.gd" type="Script" id=4]
+[ext_resource path="res://Monitor.gd" type="Script" id=5]
+[ext_resource path="res://Monsters.gd" type="Script" id=6]
+[ext_resource path="res://assets/static.jpg" type="Texture" id=8]
+[ext_resource path="res://assets/background.png" type="Texture" id=9]
+[ext_resource path="res://Static.gd" type="Script" id=10]
+[ext_resource path="res://assets/static.wav" type="AudioStream" id=11]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 957.272, 557.383 )
+scale = Vector2( 0.820242, 0.820241 )
+texture = ExtResource( 9 )
+
+[node name="Monitor" type="Sprite" parent="."]
+position = Vector2( 971.436, -511.67 )
+scale = Vector2( 1.56532, 1.56532 )
+texture = ExtResource( 1 )
+script = ExtResource( 5 )
+screen_path = NodePath("Screen Contents")
+room_manager_path = NodePath("../Room Manager")
+monster_manager_path = NodePath("../Monster Manager")
+
+[node name="Cable" type="Sprite" parent="Monitor"]
+position = Vector2( -445.162, -101.521 )
+scale = Vector2( 5.90069, 5.90069 )
+texture = ExtResource( 2 )
+
+[node name="Screen Outer Border" type="ColorRect" parent="Monitor"]
+margin_left = -53.9762
+margin_top = -221.303
+margin_right = 282.029
+margin_bottom = 194.697
+color = Color( 0.109804, 0.635294, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Screen Inner Border" type="ColorRect" parent="Monitor"]
+visible = false
+margin_left = -48.5745
+margin_top = -214.332
+margin_right = 275.431
+margin_bottom = 188.668
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Screen Contents" type="TextureRect" parent="Monitor"]
+margin_left = -45.0
+margin_top = -209.0
+margin_right = 273.0
+margin_bottom = 188.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Kitchen Button" type="Button" parent="Monitor"]
+margin_left = -245.0
+margin_top = -177.0
+margin_right = -97.0
+margin_bottom = -146.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bathroom Button" type="Button" parent="Monitor"]
+margin_left = -245.0
+margin_top = -96.923
+margin_right = -97.0
+margin_bottom = -65.923
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Lounge Button" type="Button" parent="Monitor"]
+margin_left = -245.0
+margin_top = -16.0
+margin_right = -97.0
+margin_bottom = 15.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Static" type="Node2D" parent="Monitor"]
+visible = false
+z_index = 1
+script = ExtResource( 10 )
+
+[node name="Sprite" type="TextureRect" parent="Monitor/Static"]
+margin_left = -45.0
+margin_top = -209.0
+margin_right = 273.0
+margin_bottom = 188.0
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Monitor/Static"]
+stream = ExtResource( 11 )
+
+[node name="Monitor Button" type="Button" parent="."]
+margin_left = 1738.48
+margin_top = 326.873
+margin_right = 1873.48
+margin_bottom = 448.873
+text = "Monitor"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Room Manager" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="Monster Manager" type="Node" parent="."]
+script = ExtResource( 6 )
+timer_path = NodePath("Spawn Timer")
+monitor_path = NodePath("../Monitor")
+
+[node name="Spawn Timer" type="Timer" parent="Monster Manager"]
+wait_time = 8.0
+one_shot = true
+autostart = true
+[connection signal="pressed" from="Monitor/Kitchen Button" to="Monitor" method="_on_Channel_Button_pressed" binds= [ "Kitchen" ]]
+[connection signal="pressed" from="Monitor/Bathroom Button" to="Monitor" method="_on_Channel_Button_pressed" binds= [ "Bathroom" ]]
+[connection signal="pressed" from="Monitor/Lounge Button" to="Monitor" method="_on_Channel_Button_pressed" binds= [ "Lounge" ]]
+[connection signal="pressed" from="Monitor Button" to="Monitor" method="_on_Monitor_Button_pressed"]
+[connection signal="timeout" from="Monster Manager/Spawn Timer" to="Monster Manager" method="_on_Spawn_Timer_timeout"]
