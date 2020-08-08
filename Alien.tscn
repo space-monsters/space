@@ -4,6 +4,7 @@
 [ext_resource path="res://assets/egg.png" type="Texture" id=2]
 
 [node name="Alien" type="Sprite"]
+scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 script = ExtResource( 1 )
 
